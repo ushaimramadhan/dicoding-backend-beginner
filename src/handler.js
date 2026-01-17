@@ -75,8 +75,8 @@ export const getBooks = (req, res) => {
 };
 
 export const getBookById = (req, res) => {
-  const { id } = req.params;
-  const book = books.find((n) => n.id === id);
+  const { bookId } = req.params;
+  const book = books.find((n) => n.id === bookId);
 
   if (book) {
     return res.status(200).json({
@@ -148,5 +148,22 @@ export const editBookById = (req, res) => {
   return res.status(404).json({
     status: "fail",
     message: "Gagal memperbarui buku. Id tidak ditemukan",
+  });
+};
+
+export const deleteBookById = (req, res) => {
+  const { bookId } = req.params;
+  const book = books.find((n) => n.id === bookId);
+
+  if (book) {
+    return res.status(200).json({
+      status: "success",
+      message: "Buku berhasil dihapus",
+    });
+  }
+
+  return res.status(404).json({
+    status: "fail",
+    message: "Buku gagal dihapus. Id tidak ditemukan",
   });
 };
