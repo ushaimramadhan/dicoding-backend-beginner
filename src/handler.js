@@ -1,5 +1,5 @@
-import { nanoid } from "nanoid";
-import books from "./books.js";
+import {nanoid} from 'nanoid';
+import books from './books.js';
 
 export const createBook = (req, res) => {
   const {
@@ -15,16 +15,16 @@ export const createBook = (req, res) => {
 
   if (!name) {
     return res.status(400).json({
-      status: "fail",
-      message: "Gagal menambahkan buku. Mohon isi nama buku",
+      status: 'fail',
+      message: 'Gagal menambahkan buku. Mohon isi nama buku',
     });
   }
 
   if (readPage > pageCount) {
     return res.status(400).json({
-      status: "fail",
+      status: 'fail',
       message:
-        "Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount",
+        'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
     });
   }
 
@@ -52,15 +52,15 @@ export const createBook = (req, res) => {
 
   if (isSuccess) {
     return res.status(201).json({
-      status: "success",
-      message: "Buku berhasil ditambahkan",
-      data: { bookId: id },
+      status: 'success',
+      message: 'Buku berhasil ditambahkan',
+      data: {bookId: id},
     });
   }
 };
 
 export const getBooks = (req, res) => {
-  const { name, reading, finished } = req.query;
+  const {name, reading, finished} = req.query;
 
   let filteredBooks = books;
 
@@ -72,13 +72,13 @@ export const getBooks = (req, res) => {
 
   if (reading) {
     filteredBooks = filteredBooks.filter(
-      (book) => Number(book.reading) === Number(reading),
+        (book) => Number(book.reading) === Number(reading),
     );
   }
 
   if (finished) {
     filteredBooks = filteredBooks.filter(
-      (book) => Number(book.finished) === Number(finished),
+        (book) => Number(book.finished) === Number(finished),
     );
   }
 
@@ -89,7 +89,7 @@ export const getBooks = (req, res) => {
   }));
 
   return res.status(200).json({
-    status: "success",
+    status: 'success',
     data: {
       books: responseBooks,
     },
@@ -97,24 +97,24 @@ export const getBooks = (req, res) => {
 };
 
 export const getBookById = (req, res) => {
-  const { bookId } = req.params;
+  const {bookId} = req.params;
   const book = books.find((n) => n.id === bookId);
 
   if (book) {
     return res.status(200).json({
-      status: "success",
-      data: { book },
+      status: 'success',
+      data: {book},
     });
   }
 
   return res.status(404).json({
-    status: "fail",
-    message: "Buku tidak ditemukan",
+    status: 'fail',
+    message: 'Buku tidak ditemukan',
   });
 };
 
 export const editBookById = (req, res) => {
-  const { bookId } = req.params;
+  const {bookId} = req.params;
   const {
     name,
     year,
@@ -128,16 +128,16 @@ export const editBookById = (req, res) => {
 
   if (!name) {
     return res.status(400).json({
-      status: "fail",
-      message: "Gagal memperbarui buku. Mohon isi nama buku",
+      status: 'fail',
+      message: 'Gagal memperbarui buku. Mohon isi nama buku',
     });
   }
 
   if (readPage > pageCount) {
     return res.status(400).json({
-      status: "fail",
+      status: 'fail',
       message:
-        "Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount",
+        'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
     });
   }
 
@@ -162,31 +162,31 @@ export const editBookById = (req, res) => {
     };
 
     return res.status(200).json({
-      status: "success",
-      message: "Buku berhasil diperbarui",
+      status: 'success',
+      message: 'Buku berhasil diperbarui',
     });
   }
 
   return res.status(404).json({
-    status: "fail",
-    message: "Gagal memperbarui buku. Id tidak ditemukan",
+    status: 'fail',
+    message: 'Gagal memperbarui buku. Id tidak ditemukan',
   });
 };
 
 export const deleteBookById = (req, res) => {
-  const { bookId } = req.params;
+  const {bookId} = req.params;
   const index = books.findIndex((book) => book.id === bookId);
 
   if (index !== -1) {
     books.splice(index, 1);
     return res.status(200).json({
-      status: "success",
-      message: "Buku berhasil dihapus",
+      status: 'success',
+      message: 'Buku berhasil dihapus',
     });
   }
 
   return res.status(404).json({
-    status: "fail",
-    message: "Buku gagal dihapus. Id tidak ditemukan",
+    status: 'fail',
+    message: 'Buku gagal dihapus. Id tidak ditemukan',
   });
 };
