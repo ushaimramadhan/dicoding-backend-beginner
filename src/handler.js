@@ -15,7 +15,7 @@ export const createBook = (req, res) => {
   const id = nanoid(16);
   const finished = pageCount === readPage;
   const insertedAt = new Date().toISOString();
-  const updateAt = insertedAt;
+  const updatedAt = insertedAt;
   const newNote = {
     id,
     name,
@@ -28,7 +28,7 @@ export const createBook = (req, res) => {
     finished,
     reading,
     insertedAt,
-    updateAt,
+    updatedAt,
   };
   books.push(newNote);
   const isSuccess = books.filter((book) => book.id === id).length > 0;
@@ -155,9 +155,10 @@ export const editBookById = (req, res) => {
 
 export const deleteBookById = (req, res) => {
   const { bookId } = req.params;
-  const book = books.find((n) => n.id === bookId);
+  const index = books.findIndex((book) => book.id === bookId);
 
-  if (book) {
+  if (index !== -1) {
+    books.splice(index, 1);
     return res.status(200).json({
       status: "success",
       message: "Buku berhasil dihapus",
