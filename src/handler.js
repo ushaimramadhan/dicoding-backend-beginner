@@ -90,3 +90,63 @@ export const getBookById = (req, res) => {
     message: "Buku tidak ditemukan",
   });
 };
+
+export const editBookById = (req, res) => {
+  const { bookId } = req.params;
+  const {
+    name,
+    year,
+    author,
+    summary,
+    publisher,
+    pageCount,
+    readPage,
+    reading,
+  } = req.body;
+
+  if (!name) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Gagal memperbarui buku. Mohon isi nama buku",
+    });
+  }
+
+  if (readPage > pageCount) {
+    return res.status(400).json({
+      status: "fail",
+      message:
+        "Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount",
+    });
+  }
+
+  const index = books.findIndex((book) => book.id === bookId);
+
+  if (index !== -1) {
+    const updatedAt = new Date().toISOString();
+    const finished = pageCount === readPage;
+
+    books[index] = {
+      ...books[index],
+      name,
+      year,
+      author,
+      summary,
+      publisher,
+      pageCount,
+      readPage,
+      reading,
+      finished,
+      updatedAt,
+    };
+
+    return res.status(200).json({
+      status: "success",
+      message: "Buku berhasil diperbarui",
+    });
+  }
+
+  return res.status(404).json({
+    status: "fail",
+    message: "Gagal memperbarui buku. Id tidak ditemukan",
+  });
+};
