@@ -12,6 +12,22 @@ export const createBook = (req, res) => {
     readPage,
     reading,
   } = req.body;
+
+  if (!name) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Gagal menambahkan buku. Mohon isi nama buku",
+    });
+  }
+
+  if (readPage > pageCount) {
+    return res.status(400).json({
+      status: "fail",
+      message:
+        "Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount",
+    });
+  }
+
   const id = nanoid(16);
   const finished = pageCount === readPage;
   const insertedAt = new Date().toISOString();
@@ -31,22 +47,8 @@ export const createBook = (req, res) => {
     updatedAt,
   };
   books.push(newNote);
+
   const isSuccess = books.filter((book) => book.id === id).length > 0;
-
-  if (!name) {
-    return res.status(400).json({
-      status: "fail",
-      message: "Gagal menambahkan buku. Mohon isi nama buku",
-    });
-  }
-
-  if (readPage > pageCount) {
-    return res.status(400).json({
-      status: "fail",
-      message:
-        "Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount",
-    });
-  }
 
   if (isSuccess) {
     return res.status(201).json({
@@ -58,21 +60,39 @@ export const createBook = (req, res) => {
 };
 
 export const getBooks = (req, res) => {
-  const responseBooks = books.map((book) => ({
+  const { name, reading, finished } = req.query;
+
+  let filteredBooks = books;
+
+  if (name !== undefined) {
+    filteredBooks = filteredBooks.filter((book) =>
+      book.name.toLowerCase().includes(name.toLowerCase()),
+    );
+  }
+
+  if (reading !== undefined) {
+    filteredBooks = filteredBooks.filter(
+      (book) => book.reading === (reading === "1"),
+    );
+  }
+
+  if (finished !== undefined) {
+    filteredBooks = filteredBooks.filter(
+      (book) => book.finished === (finished === "1"),
+    );
+  }
+
+  const responseBooks = filteredBooks.map((book) => ({
     id: book.id,
     name: book.name,
     publisher: book.publisher,
   }));
 
-  if (books === null) {
-    return res.status(200).json({
-      status: "success",
-      data: { books },
-    });
-  }
   return res.status(200).json({
     status: "success",
-    data: { responseBooks },
+    data: {
+      books: responseBooks,
+    },
   });
 };
 
