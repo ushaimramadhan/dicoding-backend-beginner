@@ -64,21 +64,21 @@ export const getBooks = (req, res) => {
 
   let filteredBooks = books;
 
-  if (name !== undefined) {
+  if (name) {
     filteredBooks = filteredBooks.filter((book) =>
       book.name.toLowerCase().includes(name.toLowerCase()),
     );
   }
 
-  if (reading !== undefined) {
+  if (reading) {
     filteredBooks = filteredBooks.filter(
-      (book) => book.reading === (reading === "1"),
+      (book) => Number(book.reading) === Number(reading),
     );
   }
 
-  if (finished !== undefined) {
+  if (finished) {
     filteredBooks = filteredBooks.filter(
-      (book) => book.finished === (finished === "1"),
+      (book) => Number(book.finished) === Number(finished),
     );
   }
 
