@@ -33,11 +33,10 @@ export const createBook = (req, res) => {
   books.push(newNote);
   const isSuccess = books.filter((book) => book.id === id).length > 0;
 
-  if (isSuccess) {
-    return res.status(201).json({
-      status: "success",
-      message: "Buku berhasil ditambahkan",
-      data: { bookId: id },
+  if (!name) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Gagal menambahkan buku. Mohon isi nama buku",
     });
   }
 
@@ -49,10 +48,13 @@ export const createBook = (req, res) => {
     });
   }
 
-  return res.status(400).json({
-    status: "fail",
-    message: "Gagal menambahkan buku. Mohon isi nama buku",
-  });
+  if (isSuccess) {
+    return res.status(201).json({
+      status: "success",
+      message: "Buku berhasil ditambahkan",
+      data: { bookId: id },
+    });
+  }
 };
 
 export const getBooks = (req, res) => {
