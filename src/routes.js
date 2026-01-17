@@ -10,8 +10,8 @@ import {
 const router = express.Router();
 router.post("/books", createBook);
 router.get("/books", getBooks);
-router.get("/books/{bookId}", getBookById);
-router.put("/books/{bookId}", editBookById);
-router.delete("/books/{bookId}", deleteBookById);
+router.get("/books/:bookId", getBookById);
+router.put("/books/:bookId", editBookById);
+router.delete("/books/:bookId", deleteBookById);
 
 export default router;
