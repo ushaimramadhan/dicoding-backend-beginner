@@ -54,3 +54,22 @@ export const createBook = (req, res) => {
     message: "Gagal menambahkan buku. Mohon isi nama buku",
   });
 };
+
+export const getBooks = (req, res) => {
+  const responseBooks = books.map((book) => ({
+    id: book.id,
+    name: book.name,
+    publisher: book.publisher,
+  }));
+
+  if (books === null) {
+    return res.status(200).json({
+      status: "success",
+      data: { books },
+    });
+  }
+  return res.status(200).json({
+    status: "success",
+    data: { responseBooks },
+  });
+};
